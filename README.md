@@ -13,11 +13,17 @@
 
 - Install
 
+
+
+- Install [Eagle]([https://jp.eagle.cool/](https://jp.eagle.cool/))
+
+
+
 ## How to use
 
 - Enable this extension in "Setting"
 
-- Open "Eagle" application
+- Start "Eagle" application
 
 - Open "AUTO1111" and create image as usual.
   

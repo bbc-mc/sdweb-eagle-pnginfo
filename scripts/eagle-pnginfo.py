@@ -45,11 +45,11 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
         if shared.opts.save_generationinfo_to_eagle_as_annotation:
             annotation = info
         if shared.opts.save_positive_prompt_to_eagle_as_tags:
-            tags += pos_prompt.split(",")
+            tags += [ x.strip() for x in pos_prompt.split(",") ]
         if shared.opts.save_negative_prompt_to_eagle_as_tags:
-            tags += neg_prompt.split(",")
+            tags += [ x.strip() for x in neg_prompt.split(",") ]
         elif shared.opts.save_negative_prompt_to_eagle_with_n:
-            tags += [ f"n:{x}" for x in neg_prompt.split(",")]
+            tags += [ f"n:{x.strip()}" for x in neg_prompt.split(",")]
         # send to Eagle
         _ret = add_from_path(fullfn, filename, annotation=annotation, tags=tags, folderId=shared.opts.save_to_eagle_folderid)
         dprint(_ret)
