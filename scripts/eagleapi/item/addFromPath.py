@@ -2,7 +2,7 @@
 #
 import requests
 
-def add_from_path(filefullpath, filename, website="", tags:list=[], annotation="", folderId=None):
+def add_from_path(filefullpath, filename, website="", tags:list=[], annotation="", folderId=None, server_url="http://localhost", port=41595):
     """EAGLE API:addFromPath
 
     Args:
@@ -12,10 +12,12 @@ def add_from_path(filefullpath, filename, website="", tags:list=[], annotation="
         website (str, optional): Used as "URL" in Eagle UI. Defaults to "".
         tags (list, optional): Used as "tags" in Eagle UI. Defaults to [].
         annotation (str, optional): Used as "memo" in Eagle UI. Defaults to "".
+        server_url (str, optional): Eagle Local Server URL with Port. Defaults to "http://localhost:41595"
 
     Returns:
-        _type_: _description_
+        Response: return of requests.post
     """
+    API_URL = f"{server_url}:{port}/api/item/addFromPath"
 
     data = {
         "path": filefullpath, #"C://Users/User/Downloads/test.jpg",
@@ -38,8 +40,6 @@ def add_from_path(filefullpath, filename, website="", tags:list=[], annotation="
             "folderId": folderId #"KEHB8I2C9F23H"
         })
 
-    POST_TO = "http://localhost:41595/api/item/addFromPath"
+    res = requests.post(API_URL, json=data)
 
-    r_post = requests.post(POST_TO, json=data)
-
-    return r_post
+    return res
