@@ -1,6 +1,20 @@
 import requests
+import ipaddress
+from urllib.parse import urlparse
 
 from . import api_folder
+
+def get_url_port(server_url_port=""):
+    if not server_url_port or server_url_port == "":
+        return None, None
+    o = urlparse(server_url_port)
+    _ip = ipaddress.ip_address(o.hostname)
+    if _ip.version == 6:
+        _url = f"http://[{o.hostname}]"
+    else:
+        _url = f"http://{o.hostname}"
+    port = o.port
+    return _url, port
 
 # util for /api/folder/list
 def findFolderByID(r_posts, target_id):

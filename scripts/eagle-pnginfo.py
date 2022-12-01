@@ -80,7 +80,7 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
                     tags=tags,
                     annotation=annotation
                 )
-            server_url, port = api_application.get_url_port(shared.opts.outside_server_url_port)
+            server_url, port = api_util.get_url_port(shared.opts.outside_server_url_port)
             folderId = _get_folderId(shared.opts.save_to_eagle_folderid, shared.opts.allow_to_create_folder_on_eagle, server_url=server_url, port=port)
             _ret = api_item.add_from_URL_base64(
                 item,

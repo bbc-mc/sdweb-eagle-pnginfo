@@ -2,6 +2,8 @@
 #
 import requests
 
+from . import api_util
+
 def info(server_url="http://localhost", port=41595, timeout_connect=3, timeout_read=10):
     """EAGLE API:/api/application/info
 
@@ -41,16 +43,9 @@ def is_alive(server_url="http://localhost", port=41595, timeout_connect=3, timeo
 def is_valid_url_port(server_url_port="", timeout_connect=3, timeout_read=3):
     if not server_url_port or server_url_port == "":
         return False
-    server_url, port = get_url_port(server_url_port)
+    server_url, port = api_util.get_url_port(server_url_port)
     if not server_url or not port:
         return False
     if not is_alive(server_url=server_url, port=port, timeout_connect=timeout_connect, timeout_read=timeout_read):
         return False
     return True
-
-def get_url_port(server_url_port=""):
-    if not server_url_port or server_url_port == "":
-        return None, None
-    server_url=":".join(server_url_port.split(":")[0:2])
-    port = "" if len(server_url_port.split(":")) < 3 else ":".join(server_url_port.split(":")[2:])
-    return server_url, port
