@@ -29,13 +29,16 @@
 
 ## About Setting params
 
-| In "Setting" tab                        | ![](misc/sss08.png)                                                                                                                                              |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "Send all image to Eagle"               | Enable this extension                                                                                                                                            |
-| "FolderID on Eagle (option)"            | (option) Specify folder by ID on Eagle to input images                                                                                                           |
-| "Save Generation info as Annotation"    | Save PNGinfo style text to "memo" on Eagle                                                                                                                       |
-| "Save positive prompt to Eagle as tags" | Save each prompt word as tag on Eagle                                                                                                                            |
-| "Save negative prompt to Eagle as"      | Save each negative prompt word as tag on Eagle<br/>None  : disabled<br/>tag   : normal tag. i.e.) "bad anatomy"<br/>n:tag : tag with "n:". i.e.)"n:bad annatomy" |
+| In "Setting" tab                                                     | ![](misc/sss09.png)                                                                                                                                                                                                                                                                                                       |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Send all image to Eagle"                                            | Enable this extension                                                                                                                                                                                                                                                                                                     |
+| "Save Generation info as Annotation"                                 | Save PNGinfo style text to "memo" on Eagle                                                                                                                                                                                                                                                                                |
+| "Save positive prompt to Eagle as tags"                              | Save each prompt word as tag on Eagle                                                                                                                                                                                                                                                                                     |
+| "Save negative prompt to Eagle as"                                   | Save each negative prompt word as tag on Eagle<br/>None  : disabled<br/>tag   : normal tag. i.e.) "bad anatomy"<br/>n:tag : tag with "n:". i.e.)"n:bad annatomy"                                                                                                                                                          |
+| Additinal tag pattern                                                | Add tags about Generation info params.<br/>![](misc/sss10.png)<br />Usable word is listed,<br/>```Steps,Sampler,CFG scale,Seed,Face restoration,Size,Model hash,Model,Hypernet,Hypernet strength,Variation seed,Variation seed strength,Seed resize from,Denoising strength,Conditional mask weight,Eta,Clip skip,ENSD``` |
+| Outside Eagle server connection (url:port)                           | (Default: http://localhost:41595)<br/> URL:port as Eagle server address.<br/>```http://<server ip>:<port>```                                                                                                                                                                                                              |
+| FolderID or FolderName on Eagle (option)                             | (option) Specify folder by ID on Eagle to input images                                                                                                                                                                                                                                                                    |
+| Allow to crete folder on Eagle, if specified foldername dont exists. | (option) Allow create new folder with specified name, when folder with this name dont exists.                                                                                                                                                                                                                             |
 
 ## Setting sample
 
@@ -48,6 +51,26 @@
 | ![](misc/sss04-1.png) | ![](misc/sss04-2.png) | Image sent to Eagle, with Generation info, tags from negative prompt                                               |
 | ![](misc/sss05-1.png) | ![](misc/sss05-2.png) | Image sent to Eagle, with Generation info, tags from negative prompt decorated with "n:".<br/> i.e.) n:bad anatomy |
 | ![](misc/sss06-1.png) | ![](misc/sss06-2.png) | Image sent to Eagle, with Generation info, tags from positive prompt and negative prompt decorated with "n:".      |
-| ![](misc/sss07-1.png) | FolderID              | You can get "Eagle forlderID" on Eagle UI. Right click folder and select "copy link".                              |
-| ![](misc/sss07-4.png) | ![](misc/sss07-3.png) | Input folderID.                                                                                                    |
-| ![](misc/sss07-2.png) |                       | Bad sample of folderID.<br/>Only right-end value required.                                                         |
+
+### Setting sample: Save to folder (by ID)
+
+| Settings              | Result                | Comment                                                                                |
+| --------------------- | --------------------- | -------------------------------------------------------------------------------------- |
+| ![](misc/sss07-4.png) |                       | Input folderID                                                                         |
+| ![](misc/sss07-1.png) | ![](misc/sss07-3.png) | .You can get "Eagle forlderID" on Eagle UI. Right click folder and select "copy link". |
+| ![](misc/sss07-2.png) |                       | Bad sample of folderID.<br/>Only right-end value required.                             |
+
+### Setting sample: Save to folder (by Name)
+
+![](misc/sss11.png)
+
+- Input folder Name on Eagle
+
+- Image will saved in this folder
+
+### Setting sample: Save to (not local) Eagle server
+
+![](misc/sss12.png)
+
+- Run your Eagle server public, and note server IP and Port
+- Input address of your server as ```http://<server_ip>:<port>```
