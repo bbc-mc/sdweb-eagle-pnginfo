@@ -35,7 +35,6 @@
 | Save Generation info as Annotation                                   | PNGinfo に表示されるような、3行からなる生成情報を、Eagle の メモ欄に登録します                                                                                                                                                                                                                                                                                |
 | Save positive prompt to Eagle as tags                                | プロンプトを Eagle の tag として登録します                                                                                                                                                                                                                                                                                                    |
 | Save negative prompt to Eagle as                                     | ネガティブプロンプトを Eagle の tag として登録します<br/>None: 登録しません<br/>tag: 登録します<br/>n:tag 登録します。登録時、タグ名の頭に "n:" をつけ、通常のプロンプトの tag と判別できるようにします                                                                                                                                                                                                |
-| FolderID on Eagle                                                    | (option: 必須ではありません)<br/>画像を登録する Eagle 側のフォルダID を指定できます                                                                                                                                                                                                                                                                         |
 | Additinal tag pattern                                                | Generation info の3行目に表示されている項目について、タグ化する項目を選択できます<br/>![](misc/sss10.png)<br />使用可能な設定は以下の通りです。<br/>```Steps,Sampler,CFG scale,Seed,Face restoration,Size,Model hash,Model,Hypernet,Hypernet strength,Variation seed,Variation seed strength,Seed resize from,Denoising strength,Conditional mask weight,Eta,Clip skip,ENSD``` |
 | Outside Eagle server connection (url:port)                           | URL:Portを用いて、公開されている Eagle サーバへ画像を送信する設定です                                                                                                                                                                                                                                                                                     |
 | FolderID or FolderName on Eagle (option)                             | Eagle 上での画像保存先フォルダを、FolderID または Folder名で設定できます                                                                                                                                                                                                                                                                                |
@@ -49,28 +48,29 @@
 | ![](misc/sss01-1.png) | ![](misc/sss01-2.png) | 画像を Eagle へ送ります                                                                                     |
 | ![](misc/sss02-1.png) | ![](misc/sss02-2.png) | 画像を Eagle へ送ります<br/>Generation info 付き                                                              |
 | ![](misc/sss03-1.png) | ![](misc/sss03-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, positive prompt 付き                                        |
-| ![](misc/sss04-1.png) | ![](misc/sss04-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, negative　prompt 付き                                        |
-| ![](misc/sss05-1.png) | ![](misc/sss05-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, negative　prompt 付き。< i.e.) n:bad anatomy                  |
+| ![](misc/sss04-1.png) | ![](misc/sss04-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, negative prompt 付き                                        |
+| ![](misc/sss05-1.png) | ![](misc/sss05-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, negative prompt 付き。< i.e.) n:bad anatomy                  |
 | ![](misc/sss06-1.png) | ![](misc/sss06-2.png) | 画像を Eagle へ送ります<br/>Generation info, tag, positive prompt, negative prompt 付き。< i.e.) n:bad anatomy |
 
-### Setting sample: Save to folder (by ID)
+### 設定サンプル: フォルダへの保存（IDで指定）
 
 | Settings              | Result                | Comment                                                                   |
 | --------------------- | --------------------- | ------------------------------------------------------------------------- |
 | ![](misc/sss07-4.png) |                       | folderID を入れておくと、対象のフォルダに画像が格納されます                                        |
-| ![](misc/sss07-1.png) | ![](misc/sss07-3.png) | "Eagle forlderID" を取得するには、Eagle UI で対象のフォルダを右クリックし、"copy link" を選択        |
+| ![](misc/sss07-1.png) | ![](misc/sss07-3.png) | "Eagle forlderID" を取得するには、Eagle UI で対象のフォルダを右クリックし、"リンクをコピー" を選択          |
 | ![](misc/sss07-2.png) |                       | folderID の悪い例<br/>コピーしたものをそのまま入力すると左画像のように長いパス名が入っていますが、必要になるのは右端の文字列のみです |
 
-### Setting sample: Save to folder (by Name)
+### 設定サンプル: フォルダへの保存（フォルダ名で指定）
 
 ![](misc/sss11.png)
 
 - 画像を保存したいフォルダ名を入力してください
+- 上記のサンプルでは `eagle_inbox` を指定しています
 
-### Setting sample: Save to (not local) Eagle server
+### 設定サンプル: ネットワーク越しで Eagle Server へ保存
 
 ![](misc/sss12.png)
 
-- Eagle サーバへアクセス出来る必要があります
+- Eagle サーバへアクセス出来るようにする必要があります
 - サーバアドレスを以下の形式で入力してください ```http://<server_ip>:<port>```
 - 使用しない場合は、空白にしてください

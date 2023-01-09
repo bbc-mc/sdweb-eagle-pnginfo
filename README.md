@@ -65,6 +65,8 @@
 ![](misc/sss11.png)
 
 - Input folder Name on Eagle
+  
+   - Example is `eagle_inbox`
 
 - Image will saved in this folder
 
