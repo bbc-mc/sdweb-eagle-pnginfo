@@ -7,6 +7,7 @@ from modules import paths, script_callbacks, shared
 from scripts.eagleapi import api_application
 from scripts.eagleapi import api_item
 from scripts.eagleapi import api_util
+from scripts.parser import Parser
 from scripts.tag_generator import TagGenerator
 
 DEBUG = False
@@ -24,6 +25,7 @@ def on_ui_settings():
     # flg: save positive prompt to tags
     shared.opts.add_option("save_positive_prompt_to_eagle_as_tags", shared.OptionInfo(False, "Save positive prompt to Eagle as tags", section=("eagle_pnginfo", "Eagle Pnginfo")))
     shared.opts.add_option("save_negative_prompt_to_eagle_as", shared.OptionInfo("n:tag", "Save negative prompt as", gr.Radio, {"choices": ["None", "tag", "n:tag"]}, section=("eagle_pnginfo", "Eagle Pnginfo")))
+    shared.opts.add_option("use_prompt_parser_when_save_prompt_to_eagle_as_tags", shared.OptionInfo(False, "Use prompt parser when save prompt to eagle as tags", section=("eagle_pnginfo", "Eagle Pnginfo")))
     # txt: Additinal tags
     shared.opts.add_option("additional_tags_to_eagle", shared.OptionInfo("", "Additinal tag pattern", section=("eagle_pnginfo", "Eagle Pnginfo")))
     # txt: server_url
@@ -53,13 +55,13 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
             annotation = info
         if shared.opts.save_positive_prompt_to_eagle_as_tags:
             if len(pos_prompt.split(",")) > 0:
-                tags += [ x.strip() for x in pos_prompt.split(",") if x.strip() != "" ]
+                tags += Parser.prompt_to_tags(pos_prompt)
         if shared.opts.save_negative_prompt_to_eagle_as == "tag":
             if len(neg_prompt.split(",")) > 0:
-                tags += [ x.strip() for x in neg_prompt.split(",") if x.strip() != "" ]
+                tags += Parser.prompt_to_tags(neg_prompt)
         elif shared.opts.save_negative_prompt_to_eagle_as == "n:tag":
             if len(neg_prompt.split(",")) > 0:
-                tags += [ f"n:{x.strip()}" for x in neg_prompt.split(",") if x.strip() != "" ]
+                tags += [ f"n:{x}" for x in Parser.prompt_to_tags(neg_prompt) ]
         if shared.opts.additional_tags_to_eagle != "":
             gen = TagGenerator(p=params.p, image=params.image)
             _tags = gen.generate_from_p(shared.opts.additional_tags_to_eagle)
