@@ -43,16 +43,17 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
         dprint(f"DEBUG:on_image_saved:  ENABELD. enable_eagle_pnginfo is true.")
         # collect info
         fullfn = os.path.join(path_root, params.filename)
-        info = params.pnginfo.get('parameters', None)
+        info = params.pnginfo.get("parameters", None)
+        extras = params.pnginfo.get("extras", None)
         filename = os.path.splitext(os.path.basename(fullfn))[0]
         #
-        pos_prompt = params.p.prompt
-        neg_prompt = params.p.negative_prompt
+        pos_prompt = params.p.prompt if hasattr(params.p, "prompt") else ""
+        neg_prompt = params.p.negative_prompt if hasattr(params.p, "negative_prompt") else ""
         #
         annotation = None
         tags = []
         if shared.opts.save_generationinfo_to_eagle_as_annotation:
-            annotation = info
+            annotation = "\n".join([s for s in [info, extras] if s is not None])
         if shared.opts.save_positive_prompt_to_eagle_as_tags:
             if len(pos_prompt.split(",")) > 0:
                 tags += Parser.prompt_to_tags(pos_prompt)
