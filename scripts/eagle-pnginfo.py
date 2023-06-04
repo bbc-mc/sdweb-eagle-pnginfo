@@ -34,6 +34,8 @@ def on_ui_settings():
     shared.opts.add_option("save_to_eagle_folderid", shared.OptionInfo("", "(option) FolderID or FolderName on Eagle", component_args=shared.hide_dirs, section=("eagle_pnginfo", "Eagle Pnginfo")))
     # specify Eagle folderID
     shared.opts.add_option("allow_to_create_folder_on_eagle", shared.OptionInfo(False, "(option) Allow to create folder on Eagle, if specified foldername dont exists.", section=("eagle_pnginfo", "Eagle Pnginfo")))
+    # Switch library before send to Eagle
+    shared.opts.add_option("switch_library_before_save", shared.OptionInfo("", "(option) Switch library before send to Eagle.", component_args=shared.hide_dirs, section=("eagle_pnginfo", "Eagle Pnginfo")))
 
 # image saved callback
 def on_image_saved(params:script_callbacks.ImageSaveParams):
@@ -83,6 +85,9 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
                     annotation=annotation
                 )
             server_url, port = api_util.get_url_port(shared.opts.outside_server_url_port)
+            if shared.opts.switch_library_before_save != "":
+                dprint("DEBUG: Switch Eagle active library.")
+                api_util.switch_library(shared.opts.switch_library_before_save, server_url=server_url, port=port)
             folderId = _get_folderId(shared.opts.save_to_eagle_folderid, shared.opts.allow_to_create_folder_on_eagle, server_url=server_url, port=port)
             _ret = api_item.add_from_URL_base64(
                 item,
@@ -99,6 +104,9 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
                 annotation=annotation,
                 tags=tags
             )
+            if shared.opts.switch_library_before_save != "":
+                dprint("DEBUG: Switch Eagle active library.")
+                api_util.switch_library(shared.opts.switch_library_before_save)
             folderId = _get_folderId(shared.opts.save_to_eagle_folderid, shared.opts.allow_to_create_folder_on_eagle)
             _ret = api_item.add_from_path(
                 item=item,
