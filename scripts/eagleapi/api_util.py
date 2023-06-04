@@ -1,8 +1,10 @@
-import requests
 import ipaddress
+import requests
+import time
 from urllib.parse import urlparse
 
 from . import api_folder
+from . import api_library
 
 def get_url_port(server_url_port=""):
     if not server_url_port or server_url_port == "":
@@ -113,3 +115,33 @@ def find_or_create_folder(folder_name_or_id, allow_create_new_folder=False, serv
                 except:
                     _eagle_folderid = ""
     return _eagle_folderid
+
+def switch_library(switch_library_path, server_url="http://localhost", port=41595, timeout_connect=3, timeout_read=10):
+    """
+    Switch library if active library is not equal.
+
+    Args:
+        switch_library_path (str): Path of the library to switch to.
+        server_url (str, optional): Defaults to "http://localhost".
+        port (int, optional): Defaults to 41595.
+        timeout_connect (int, optional): Defaults to 3.
+        timeout_read (int, optional): Defaults to 10.
+    """
+    if switch_library_path and switch_library_path !="":
+        _ret_library_info = api_library.info(server_url=server_url, port=port, timeout_connect=timeout_connect, timeout_read=timeout_read)
+        _ret_library_path = _ret_library_info.json()["data"]["library"]["path"]
+        if _ret_library_path != switch_library_path:
+            api_library.switch(switch_library_path, server_url=server_url, port=port, timeout_connect=timeout_connect, timeout_read=timeout_read)
+
+            for _ in range(10):
+                try:
+                    _ret_library_info = api_library.info(server_url=server_url, port=port, timeout_connect=timeout_connect, timeout_read=timeout_read)
+                    _ret_library_path = _ret_library_info.json()["data"]["library"]["path"]
+                except requests.exceptions.ConnectionError:
+                    # If a ConnectionError thrown, Eagle library is probably switching now.
+                    _ret_library_path = ""
+                if _ret_library_path != switch_library_path:
+                    # Wait for library switched.
+                    time.sleep(0.1)
+                else:
+                    break
