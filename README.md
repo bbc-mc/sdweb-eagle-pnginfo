@@ -24,7 +24,7 @@
 - Start "Eagle" application
 
 - Open "AUTO1111" and create image as usual.
-  
+
    - images sent to "Eagle" automatically
 
 ## About Setting params
@@ -40,6 +40,7 @@
 | Outside Eagle server connection (url:port)                           | (Default: http://localhost:41595)<br/> URL:port as Eagle server address.<br/>```http://<server ip>:<port>```                                                                                                                                                                                                              |
 | FolderID or FolderName on Eagle (option)                             | (option) Specify folder by ID on Eagle to input images                                                                                                                                                                                                                                                                    |
 | Allow to crete folder on Eagle, if specified foldername dont exists. | (option) Allow create new folder with specified name, when folder with this name dont exists.                                                                                                                                                                                                                             |
+| Switch library before send to Eagle. (option)                        | (option) Switch library before send to Eagle. If left blank, no switching is performed.                                                                                                                                                                                                                                   |
 
 ## Setting sample
 
@@ -66,7 +67,7 @@
 ![](misc/sss11.png)
 
 - Input folder Name on Eagle
-  
+
    - Example is `eagle_inbox`
 
 - Image will saved in this folder
@@ -77,3 +78,13 @@
 
 - Run your Eagle server public, and note server IP and Port
 - Input address of your server as ```http://<server_ip>:<port>```
+
+### Setting sample: Switch library before send to Eagle
+
+![](misc/sss13.png)
+
+- Specifies the library where images sent if multiple libraries are used.
+- The path is specified in the format of the platform on which Eagle is running.
+  - ex) Windows: ```C:\Users\augus\Pictures\Design.library```
+  - ex) macOS: ```/Users/augus/Pictures/Design.library```
+- While image saving is in progress, the library currently displayed in the UI also switches.

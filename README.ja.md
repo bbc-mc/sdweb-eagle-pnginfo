@@ -24,7 +24,7 @@
 - 別途、"Eagle" アプリを立ち上げておく
 
 - "AUTO1111" の Web UI を開き、いつも通り画像を生成する
-  
+
    - 生成された画像は、自動的に Eagle アプリに登録されます
 
 ## 設定項目について
@@ -40,6 +40,7 @@
 | Outside Eagle server connection (url:port)                           | URL:Portを用いて、公開されている Eagle サーバへ画像を送信する設定です                                                                                                                                                                                                                                                                                     |
 | FolderID or FolderName on Eagle (option)                             | Eagle 上での画像保存先フォルダを、FolderID または Folder名で設定できます                                                                                                                                                                                                                                                                                |
 | Allow to crete folder on Eagle, if specified foldername dont exists. | (option) 指定された名前のフォルダが存在しない場合に、新しくその名前のフォルダを作成することを許可する設定です                                                                                                                                                                                                                                                                    |
+| Switch library before send to Eagle. (option)                        | (option) 画像を保存する前にライブラリを切り替えます。空白にすると切り替えを行いません                                                                                                                                                                                                                                                                             |
 
 ## 設定サンプル
 
@@ -75,3 +76,13 @@
 - Eagle サーバへアクセス出来るようにする必要があります
 - サーバアドレスを以下の形式で入力してください ```http://<server_ip>:<port>```
 - 使用しない場合は、空白にしてください
+
+### 設定サンプル: 画像を保存する前にライブラリを切り替える
+
+![](misc/sss13.png)
+
+- 複数のライブラリを使用している場合に、画像の保存処理を実行する前にアクティブなライブラリを切り替えます
+- 設定するパスはEagleを実行しているプラットフォームの形式に従って入力する必要があります
+  - ex) Windows: ```C:\Users\augus\Pictures\Design.library```
+  - ex) macOS: ```/Users/augus/Pictures/Design.library```
+- 画像の保存処理実行中は、Eagle UIに表示されているライブラリも切り替わります
