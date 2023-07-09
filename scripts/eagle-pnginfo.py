@@ -46,8 +46,11 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
         info = params.pnginfo.get('parameters', None)
         filename = os.path.splitext(os.path.basename(fullfn))[0]
         #
-        pos_prompt = params.p.prompt
-        neg_prompt = params.p.negative_prompt
+        pos_prompt = ""
+        neg_prompt = ""
+        if params.p is not None:
+            pos_prompt = params.p.prompt
+            neg_prompt = params.p.negative_prompt
         #
         annotation = None
         tags = []
