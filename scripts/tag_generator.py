@@ -5,12 +5,12 @@ class TagGenerator():
     # @seealso modules.images FilenameGenerator replacements
     # @seealso modules.processing create_infotext generation_params
     replacements ={
-        "Steps": lambda self: self.p.steps,
-        "Sampler": lambda self: self.p.sampler_name,
-        "CFG scale": lambda self: self.p.cfg_scale,
+        "Steps": lambda self: '' if self.p is None else self.p.steps,
+        "Sampler": lambda self: '' if self.p is None else self.p.sampler_name,
+        "CFG scale": lambda self: '' if self.p is None else self.p.cfg_scale,
         "Seed": lambda self: self.p.seed if self.p.seed is not None else '',
         "Face restoration": lambda self: (shared.opts.face_restoration_model if self.p.restore_faces else None),
-        "Size": lambda self: f"{self.p.width}x{self.p.height}",
+        "Size": lambda self: '' if self.p is None else f"{self.p.width}x{self.p.height}",
         "Model hash": lambda self: getattr(self.p, 'sd_model_hash', None if not shared.opts.add_model_hash_to_info or not shared.sd_model.sd_model_hash else shared.sd_model.sd_model_hash),
         "Model": lambda self: (None if not shared.opts.add_model_name_to_info or not shared.sd_model.sd_checkpoint_info.model_name else shared.sd_model.sd_checkpoint_info.model_name.replace(',', '').replace(':', '')),
         "Hypernet": lambda self: (None if shared.loaded_hypernetwork is None else shared.loaded_hypernetwork.name),

@@ -1,4 +1,5 @@
 import os
+import re
 
 import gradio as gr
 
@@ -22,6 +23,7 @@ def on_ui_settings():
     shared.opts.add_option("enable_eagle_integration", shared.OptionInfo(False, "Send all image to Eagle", section=("eagle_pnginfo", "Eagle Pnginfo")))
     # flg: save generation info to annotation
     shared.opts.add_option("save_generationinfo_to_eagle_as_annotation", shared.OptionInfo(False, "Save Generation info as Annotation", section=("eagle_pnginfo", "Eagle Pnginfo")))
+    shared.opts.add_option("save_pnginfo_prompt_to_eagle_as_tags", shared.OptionInfo(False, "Save pnginfo prompt to Eagle as tags. If you use the DynamicPrompts extension, enable it. When enabled, other prompt options are ignored.", section=("eagle_pnginfo", "Eagle Pnginfo")))
     # flg: save positive prompt to tags
     shared.opts.add_option("save_positive_prompt_to_eagle_as_tags", shared.OptionInfo(False, "Save positive prompt to Eagle as tags", section=("eagle_pnginfo", "Eagle Pnginfo")))
     shared.opts.add_option("save_negative_prompt_to_eagle_as", shared.OptionInfo("n:tag", "Save negative prompt as", gr.Radio, {"choices": ["None", "tag", "n:tag"]}, section=("eagle_pnginfo", "Eagle Pnginfo")))
@@ -46,27 +48,46 @@ def on_image_saved(params:script_callbacks.ImageSaveParams):
         info = params.pnginfo.get('parameters', None)
         filename = os.path.splitext(os.path.basename(fullfn))[0]
         #
-        pos_prompt = params.p.prompt
-        neg_prompt = params.p.negative_prompt
+        pos_prompt = ""
+        neg_prompt = ""
+        if params.p is not None:
+            pos_prompt = params.p.prompt
+            neg_prompt = params.p.negative_prompt
         #
         annotation = None
         tags = []
         if shared.opts.save_generationinfo_to_eagle_as_annotation:
             annotation = info
-        if shared.opts.save_positive_prompt_to_eagle_as_tags:
-            if len(pos_prompt.split(",")) > 0:
-                tags += Parser.prompt_to_tags(pos_prompt)
-        if shared.opts.save_negative_prompt_to_eagle_as == "tag":
-            if len(neg_prompt.split(",")) > 0:
-                tags += Parser.prompt_to_tags(neg_prompt)
-        elif shared.opts.save_negative_prompt_to_eagle_as == "n:tag":
-            if len(neg_prompt.split(",")) > 0:
-                tags += [ f"n:{x}" for x in Parser.prompt_to_tags(neg_prompt) ]
-        if shared.opts.additional_tags_to_eagle != "":
-            gen = TagGenerator(p=params.p, image=params.image)
-            _tags = gen.generate_from_p(shared.opts.additional_tags_to_eagle)
-            if _tags and len(_tags) > 0:
-                tags += _tags
+        if shared.opts.save_pnginfo_prompt_to_eagle_as_tags:
+            prompt_info = re.sub(r'(?<!\\)\(', '', info)
+            prompt_info = re.sub(r':[.0-9]+\)', '', prompt_info)
+            prompt_info = re.sub(r'(?<!\\)\)', '', prompt_info)
+            prompt_info = re.sub(r'\\', '', prompt_info)
+            prompt_lines = prompt_info.splitlines()
+            for word in prompt_lines[0].split(','):
+                w = word.strip()
+                if w != "":
+                    tags.append(w)
+            if re.match(r'^Negative prompt:', prompt_lines[1]):
+                for word in prompt_lines[1].split(','):
+                    w = word.strip()
+                    if w != "":
+                        tags.append("n:" + w)
+        else:
+            if shared.opts.save_positive_prompt_to_eagle_as_tags:
+                if len(pos_prompt.split(",")) > 0:
+                    tags += Parser.prompt_to_tags(pos_prompt)
+            if shared.opts.save_negative_prompt_to_eagle_as == "tag":
+                if len(neg_prompt.split(",")) > 0:
+                    tags += Parser.prompt_to_tags(neg_prompt)
+            elif shared.opts.save_negative_prompt_to_eagle_as == "n:tag":
+                if len(neg_prompt.split(",")) > 0:
+                    tags += [ f"n:{x}" for x in Parser.prompt_to_tags(neg_prompt) ]
+            if shared.opts.additional_tags_to_eagle != "":
+                gen = TagGenerator(p=params.p, image=params.image)
+                _tags = gen.generate_from_p(shared.opts.additional_tags_to_eagle)
+                if _tags and len(_tags) > 0:
+                    tags += _tags
 
         def _get_folderId(folder_name_or_id, allow_create_new_folder, server_url="http://localhost", port=41595):
             _ret = api_util.find_or_create_folder(folder_name_or_id, allow_create_new_folder, server_url, port)
