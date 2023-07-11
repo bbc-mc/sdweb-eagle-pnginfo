@@ -9,7 +9,7 @@ def get_url_port(server_url_port=""):
         return None, None
     o = urlparse(server_url_port)
     _url = f"http://{o.hostname}"
-    if o.hostname != "localhost":
+    if o.hostname != "localhost" and o.hostname != "host.docker.internal":
         _ip = ipaddress.ip_address(o.hostname)
         if _ip.version == 6:
             _url = f"http://[{o.hostname}]"
